@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BeyondRetarget generates executable humanoid motion directly from monocular video without using human motion as an explicit intermediate representation during inference.">
+  <meta name="keywords" content="BeyondRetarget, humanoid robot, motion retargeting, monocular video, robot motion estimation, embodied AI">
+  <title>BeyondRetarget: Learning Executable Humanoid Motions Directly from Monocular Video</title>
+  <link rel="stylesheet" href="styles.css?v=20260911-hf-cleanup">
+</head>
+<body>
+  <a class="skip-link" href="#abstract">Skip to content</a>
+
+  <div class="page-shell">
+    <aside class="side-nav is-hidden" aria-label="Section navigation">
+      <a href="#top" data-section="top">Top</a>
+      <a href="#abstract" data-section="abstract">Abstract</a>
+      <a href="#method" data-section="method">Method</a>
+      <a href="#results" data-section="results">Results</a>
+      <a href="#citation" data-section="citation">Citation</a>
+    </aside>
+
+    <main class="content">
+      <section class="hero" id="top">
+        <div class="hero-panel">
+          <h1>
+            <span class="title-mark">BeyondRetarget</span>:
+            Learning Executable Humanoid Motions<br>
+            Directly from <span class="title-accent">Monocular Video</span>
+          </h1>
+
+          <div class="author-block" aria-label="Authors and affiliations">
+            <div class="author-list">
+              <span class="author-name">Tianyu Xiong<sup>1,*</sup></span>
+              <a class="author-name" href="https://yeelou.github.io/" target="_blank" rel="noopener noreferrer">Yi Lu<sup>1,*</sup></a>
+              <span class="author-name">Jinrui Wang<sup>1</sup></span>
+              <span class="author-name">Ziqi Liang<sup>1</sup></span>
+              <span class="author-name">Dandan Lei<sup>3</sup></span>
+              <span class="author-name">Xiaoyang Zhou<sup>4</sup></span>
+              <a class="author-name" href="https://shenqiu.njucite.cn/" target="_blank" rel="noopener noreferrer">Qiu Shen<sup>1,2,&dagger;</sup></a>
+              <a class="author-name" href="https://cite.nju.edu.cn/People/Faculty/20190621/i5054.html" target="_blank" rel="noopener noreferrer">Xun Cao<sup>1,2</sup></a>
+            </div>
+            <div class="affiliation-list">
+              <p><sup>1</sup>School of Electronic Science and Engineering, Nanjing University, Nanjing, China</p>
+              <p><sup>2</sup>Key Laboratory of Optoelectronic Devices and Systems with Extreme Performances of MOE, Nanjing University, Nanjing, China</p>
+              <p><sup>3</sup>Jiangsu Mobile Information System Integration Co., Ltd., Nanjing, China</p>
+              <p><sup>4</sup>China Mobile Zijin (Jiangsu) Innovation Research Institute Co., Ltd., Nanjing, China</p>
+              <p class="corresponding-note"><sup>*</sup>Equal contribution &middot; <sup>&dagger;</sup>Corresponding author</p>
+            </div>
+          </div>
+
+          <p class="hero-subtitle">
+            Beyond the conventional “human reconstruction → robot retargeting” pipeline.
+          </p>
+
+          <div class="status-row" aria-label="Project capabilities">
+            <span>End-to-end</span>
+            <span>Multi-robot</span>
+            <span>Contact-aware</span>
+            <span>Streaming-ready</span>
+          </div>
+
+        </div>
+
+        <div class="hero-actions" aria-label="Project links">
+          <button class="resource-button is-disabled" type="button" disabled>
+            <span class="resource-icon" aria-hidden="true">A</span>
+            arXiv
+            <span class="coming-soon">Coming Soon</span>
+          </button>
+          <span class="button-separator" aria-hidden="true">/</span>
+          <button class="resource-button is-disabled" type="button" disabled>
+            <span class="resource-icon code-icon" aria-hidden="true">&lt;/&gt;</span>
+            Code
+            <span class="coming-soon">Coming Soon</span>
+          </button>
+          <span class="button-separator" aria-hidden="true">/</span>
+          <a class="resource-button is-live" href="https://huggingface.co/spaces/bear-ty/BeyondRetarget" target="_blank" rel="noopener noreferrer" aria-label="Open the BeyondRetarget Hugging Face Space">
+            <span class="resource-icon hf-icon" aria-hidden="true">HF</span>
+            Hugging Face
+            <span class="coming-soon live-label">Live Demo</span>
+          </a>
+        </div>
+
+        <div class="tldr-card">
+          <p>
+            <strong>TL;DR</strong>
+            BeyondRetarget maps a monocular RGB video directly to executable root motion and joint trajectories for multiple humanoid robots—without requiring reconstructed human motion as an inference-time intermediate.
+          </p>
+        </div>
+
+        <figure class="project-video-card teaser-video-card custom-video-player" data-custom-video-player data-video-carousel tabindex="0" aria-label="Featured project videos">
+          <div class="project-video-frame">
+            <video id="teaser-video" muted loop playsinline preload="metadata" poster="assets/images/poster-teaser-basketball.jpg?v=20260907-trim3" src="assets/videos/teaser-basketball.mp4?v=20260907-trim3">
+              Your browser does not support the video tag.
+            </video>
+            <button class="hero-carousel-arrow previous" type="button" data-carousel-direction="-1" aria-label="Show previous featured video">&#8249;</button>
+            <button class="hero-carousel-arrow next" type="button" data-carousel-direction="1" aria-label="Show next featured video">&#8250;</button>
+          </div>
+          <div class="hero-carousel-meta">
+            <div class="hero-carousel-dots" role="group" aria-label="Choose featured video">
+              <button class="hero-carousel-dot is-active" type="button" data-carousel-index="0" data-video-src="assets/videos/teaser-basketball.mp4?v=20260907-trim3" data-video-poster="assets/images/poster-teaser-basketball.jpg?v=20260907-trim3" data-video-caption="Multi-Robot Basketball Motion Capture" aria-label="Show basketball motion capture video" aria-current="true"></button>
+              <button class="hero-carousel-dot" type="button" data-carousel-index="1" data-video-src="assets/videos/teaser-pamela-4.mp4?v=20260907-trim3" data-video-poster="assets/images/poster-teaser-pamela-4.jpg?v=20260907-trim3" data-video-caption="Multi-Robot Fitness Motion Capture" aria-label="Show multi-robot fitness motion capture video one" aria-current="false"></button>
+              <button class="hero-carousel-dot" type="button" data-carousel-index="2" data-video-src="assets/videos/teaser-pamela-6.mp4?v=20260907-trim3" data-video-poster="assets/images/poster-teaser-pamela-6.jpg?v=20260907-trim3" data-video-caption="Multi-Robot Fitness Motion Capture" aria-label="Show multi-robot fitness motion capture video two" aria-current="false"></button>
+              <button class="hero-carousel-dot" type="button" data-carousel-index="3" data-video-src="assets/videos/teaser-large-arm-circle.mp4?v=20260902-local-six" data-video-poster="assets/images/poster-teaser-large-arm-circle.jpg?v=20260902-local-six" data-video-caption="In-Dataset Gymnastics Motion Capture" aria-label="Show in-dataset gymnastics motion capture video one" aria-current="false"></button>
+              <button class="hero-carousel-dot" type="button" data-carousel-index="4" data-video-src="assets/videos/teaser-hand-raise-squat.mp4?v=20260902-local-six" data-video-poster="assets/images/poster-teaser-hand-raise-squat.jpg?v=20260902-local-six" data-video-caption="In-Dataset Gymnastics Motion Capture" aria-label="Show in-dataset gymnastics motion capture video two" aria-current="false"></button>
+              <button class="hero-carousel-dot" type="button" data-carousel-index="5" data-video-src="assets/videos/teaser-dance-1.mp4?v=20260902-local-six" data-video-poster="assets/images/poster-teaser-dance-1.jpg?v=20260902-local-six" data-video-caption="Multi-Robot Dance Motion Capture" aria-label="Show multi-robot dance motion capture video" aria-current="false"></button>
+            </div>
+            <span class="hero-carousel-position" data-carousel-position aria-live="polite">1 / 6</span>
+          </div>
+          <div class="custom-video-controls" aria-label="Teaser video controls">
+            <div class="custom-video-timeline">
+              <input class="custom-video-progress" type="range" min="0" max="100" value="0" step="0.1" data-video-progress aria-label="Teaser video progress">
+              <output class="custom-video-time" data-video-time aria-label="Current time and total duration">00:00 / 00:00</output>
+            </div>
+            <div class="custom-video-actions">
+              <button class="custom-video-button" type="button" data-video-action="play">Play</button>
+              <button class="custom-video-button" type="button" data-video-action="speed">Speed: 1x</button>
+              <button class="custom-video-button" type="button" data-video-action="restart">Restart</button>
+            </div>
+          </div>
+          <figcaption data-carousel-caption>Multi-Robot Basketball Motion Capture</figcaption>
+        </figure>
+
+        <section class="online-demo-card is-live" aria-labelledby="online-demo-title">
+          <div class="online-demo-copy">
+            <div class="online-demo-heading">
+              <div>
+                <span class="demo-kicker">Interactive Online Demo</span>
+                <h2 id="online-demo-title">Turn Your Video into Multi-Robot Motion</h2>
+              </div>
+              <span class="demo-status is-live">Live on ZeroGPU</span>
+            </div>
+            <p>
+              Upload a monocular video of up to 10 seconds. BeyondRetarget will generate motion packages and a synchronized visualization for eight humanoid robots using Hugging Face community ZeroGPU resources.
+            </p>
+            <p>
+              <strong>Notice:</strong> All videos and the Interactive Online Demo on this project page use the base version of our
+              method. This version meets the real-time requirements of teleoperation, but does not yet support moving-camera
+              scenarios or large-scale global human trajectories. We plan to open-source a more general and higher-performance
+              version later with support for freely moving cameras, stronger global trajectory capture, and improved generalization
+              across diverse visual conditions, including indoor and outdoor environments.
+            </p>
+            
+            <div class="demo-output-list" aria-label="Demo outputs">
+              <span>Multi-robot motion packages</span>
+              <span>Eight-robot visualization</span>
+              <a class="demo-open-link" href="https://huggingface.co/spaces/bear-ty/BeyondRetarget" target="_blank" rel="noopener noreferrer">Open demo in a new tab <span aria-hidden="true">&#8599;</span></a>
+            </div>
+          </div>
+
+          <div class="demo-embed-shell">
+            <iframe
+              class="demo-embed"
+              src="https://bear-ty-beyondretarget.hf.space"
+              title="BeyondRetarget interactive Hugging Face ZeroGPU demo"
+              loading="lazy"
+              allow="clipboard-read; clipboard-write; fullscreen"
+            ></iframe>
+          </div>
+        </section>
+      </section>
+
+      <div class="content-group">
+        <section class="section" id="abstract">
+          <header class="section-header">
+            <span class="section-index">01</span>
+            <h2>Abstract</h2>
+          </header>
+
+          <div class="abstract-copy">
+            <p>
+              Large-scale executable motion data are essential for skill learning, whole-body control, and motion imitation of humanoid robots, yet acquiring such data is complicated and difficult. Monocular human videos are easy to collect and available at scale, making them a valuable source of motion data for humanoid robots. We present BeyondRetarget, an end-to-end framework that generates executable humanoid robot motions from monocular videos. We encodes input videos into a shared motion representation space, then translate them into multi-robot motions by robot-specific motion decoders. To address the scarcity of robot-specific data, we use a unified supervision scheme by aligning corresponding human and robot keypoints and limb morphologies, enabling human models to directly supervise training. To further enhance the temporal consistency and physical plausibility, we also introduce a contact‑aware refinement module to guide motion correction. Experiments show that BeyondRetarget can acquire accurate, robust, and executable humanoid robot motions from monocular videos, providing a new approach for large-scale, high-quality robot demonstration data acquisition.
+            </p>
+          </div>
+
+          <div class="feature-grid" aria-label="Core contributions">
+            <article class="feature-card">
+              <span class="feature-number">01</span>
+              <h3>End-to-End Estimation</h3>
+              <p>Video features are decoded directly into robot root trajectory and joint DoFs.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-number">02</span>
+              <h3>Unified Supervision</h3>
+              <p>Human annotations supervise robots through shared semantic points and morphology-aware scaling.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-number">03</span>
+              <h3>Multi-Robot shared Backbone</h3>
+              <p>Shared motion feature is reused by lightweight robot-specific decoders.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-number">04</span>
+              <h3>Contact-Aware Refinement</h3>
+              <p>Grounding and constrained IK reduce foot sliding, penetration, and contact jitter.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="method">
+          <header class="section-header">
+            <span class="section-index">02</span>
+            <h2>Method</h2>
+          </header>
+
+          <div class="method-motivation">
+            <p>
+              Conventional two-stage methods suffer from three fundamental limitations: an <strong>information bottleneck</strong>, because the retargeting stage cannot revisit the original visual evidence; <strong>error accumulation</strong>, because human-motion estimation and retargeting errors compound while the final robot-motion error cannot be propagated back for end-to-end optimization; and a <strong>robustness–adaptability trade-off</strong>. Optimization-based retargeting can support multiple robots, but its non-convex objective is prone to local optima and motion collapse. Learning-based retargeting can improve robustness, but adapting to a new robot requires a complete, high-quality robot-specific motion dataset and retraining the entire network from scratch.
+            </p>
+            <p class="method-transition">
+              BeyondRetarget replaces the disconnected two-stage pipeline with a shared motion encoder, robot-specific decoders, and a lightweight contact-aware refinement module. This unified design avoids the intermediate information bottleneck and cross-stage error accumulation while enabling efficient adaptation across robots, addressing the core limitations of two-stage methods.
+            </p>
+          </div>
+
+          <figure class="figure-card overview-figure">
+            <img src="assets/images/pipeline-comparison.png?v=20260902-local-two" alt="Comparison between the conventional human reconstruction and robot retargeting pipeline and the direct BeyondRetarget pipeline">
+            <figcaption>Conventional two-stage retargeting VS End-to-end multi-robot motion estimation.</figcaption>
+          </figure>
+
+          <div class="method-steps">
+            <article class="method-step">
+              <span>Step 01</span>
+              <h3>Visual feature extraction</h3>
+              <p>A frozen person detector and HMR2.0 visual backbone provide frame-level human-centric image features.</p>
+            </article>
+            <article class="method-step">
+              <span>Step 02</span>
+              <h3>Shared temporal encoding</h3>
+              <p>Bidirectional GRU encoding, RoPE self-attention, and cross-window attention model local and long-range motion context.</p>
+            </article>
+            <article class="method-step">
+              <span>Step 03</span>
+              <h3>Robot-specific decoding</h3>
+              <p>Residual output heads predict root trajectory, continuous root rotation, and robot-specific joint configurations.</p>
+            </article>
+            <article class="method-step">
+              <span>Step 04</span>
+              <h3>Contact-aware refinement</h3>
+              <p>Temporal filtering, root correction, and constrained leg IK improve physical consistency while retaining motion intent.</p>
+            </article>
+          </div>
+
+          <div class="technical-grid">
+            <figure class="figure-card model-figure">
+              <div class="figure-label">Model architecture</div>
+              <img src="assets/images/model-architecture.png?v=20260902-local-two" alt="BeyondRetarget model architecture with temporal encoding, robot motion decoding, contact prediction, and refinement">
+              <figcaption>Temporal motion encoding, robot-specific decoding, contact prediction, and refinement in one unified model.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="section" id="results">
+          <header class="section-header">
+            <span class="section-index">03</span>
+            <h2>Main Results</h2>
+          </header>
+
+          <div class="result-block">
+            <div class="result-heading">
+              <div>
+                <span class="result-kicker">G1 benchmark</span>
+                <h3>End-to-end estimation VS two-stage baselines</h3>
+              </div>
+              <span class="table-note">Visual input unless marked GT · red / yellow = best / second best</span>
+            </div>
+            <div class="table-scroll comparison-table-scroll">
+              <table class="results-table comparison-table" data-comparison-table>
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Robot-aligned mean per-joint position error, measured in millimeters. Lower is better.">RAMPJPE ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Rigidly aligned root trajectory error, measured in millimeters. Lower is better.">RTE ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Temporal motion jitter. Lower values indicate smoother predictions.">Jitter ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Joint acceleration error. Lower values indicate motion dynamics closer to the reference.">Accel ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Percentage of nonoverlapping 200-frame windows with mean RAMPJPE above 65 mm. Lower is better.">Failure Rate (&gt;65 mm) ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Percentage of nonoverlapping 200-frame windows with mean RAMPJPE above 100 mm. Lower is better.">Failure Rate (&gt;100 mm) ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Foot displacement while contact should be maintained. Lower means less foot sliding.">Foot Slide ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Percentage of contact frames in which the robot feet penetrate the ground or float above it. Lower is better.">Violation ↓</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Percentage of reference motions completed successfully in simulation. Higher is better.">Simulation SR ↑</span></th>
+                    <th><span class="metric-tooltip" tabindex="0" data-tooltip="Robot-aligned mean per-joint position error of the executed simulated motion, measured in millimeters. Lower is better.">Sim RAMPJPE ↓</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="ours-row">
+                    <td><strong>Ours</strong></td>
+                    <td class="rank-first">26.36</td>
+                    <td class="rank-first">80.74</td>
+                    <td class="rank-first">1.41</td>
+                    <td class="rank-first">1.51</td>
+                    <td class="rank-first">0.00</td>
+                    <td class="rank-first">0.00</td>
+                    <td class="rank-first">1.71</td>
+                    <td>6.17</td>
+                    <td class="rank-first">95.86</td>
+                    <td class="rank-first">35.04</td>
+                  </tr>
+                  <tr><td>GVHMR → NMR</td><td class="rank-second">39.19</td><td>701.13</td><td class="rank-second">1.63</td><td class="rank-second">1.56</td><td>6.21</td><td>2.22</td><td class="rank-second">2.28</td><td class="rank-first">3.09</td><td>93.92</td><td>43.32</td></tr>
+                  <tr><td>GVHMR → GMR</td><td>39.46</td><td>637.33</td><td>7.94</td><td>2.51</td><td class="rank-second">3.43</td><td class="rank-second">0.28</td><td>3.30</td><td>80.00</td><td>86.46</td><td class="rank-second">41.77</td></tr>
+                  <tr><td>WHAM → NMR</td><td>43.15</td><td>849.36</td><td>4.87</td><td>3.07</td><td>9.36</td><td>4.17</td><td>6.64</td><td class="rank-second">4.30</td><td class="rank-second">94.48</td><td>46.56</td></tr>
+                  <tr><td>WHAM → GMR</td><td>45.88</td><td class="rank-second">217.76</td><td>63.26</td><td>14.57</td><td>10.47</td><td>6.30</td><td>13.30</td><td>19.91</td><td>81.49</td><td>42.89</td></tr>
+                  <tr class="gt-row"><td>GT → NMR</td><td>33.26</td><td>837.62</td><td>1.71</td><td>1.16</td><td>3.99</td><td>1.39</td><td>1.30</td><td>3.16</td><td>95.58</td><td>40.32</td></tr>
+                  <tr class="gt-row"><td>GT → GMR</td><td>32.02</td><td>36.01</td><td>10.65</td><td>2.27</td><td>0.00</td><td>0.00</td><td>0.82</td><td>2.75</td><td>95.86</td><td>35.93</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="comparison-video-grid" aria-label="G1 qualitative comparison videos">
+            <figure class="result-video-card">
+              <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-main-waist-arm-swing.jpg?v=20260902-local-updated" src="assets/videos/main-result-waist-arm-swing.mp4?v=20260902-local-updated">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>Hands-on-waist and arm-swing motion comparison. All other two-stage methods suffer motion collapse.</figcaption>
+            </figure>
+            <figure class="result-video-card">
+              <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-main-behind-back.jpg?v=20260902-local-four" src="assets/videos/main-result-behind-back.mp4?v=20260902-local-four">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>Hands-behind-the-back motion comparison. Even with accurate SMPL estimation, the other two-stage methods still fail to place both hands behind the back.</figcaption>
+            </figure>
+            <figure class="result-video-card">
+              <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-main-large-arm-circle.jpg?v=20260902-local-updated" src="assets/videos/main-result-large-arm-circle.mp4?v=20260902-local-updated">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>Large arm circle motion comparison. All other two-stage methods suffer motion collapse.</figcaption>
+            </figure>
+            <figure class="result-video-card">
+              <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-main-hand-raise-squat.jpg?v=20260903-local-updated" src="assets/videos/main-result-hand-raise-squat-five-methods.mp4?v=20260903-local-updated">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>Hand raise and squat motion comparison. During the squat, the two-stage methods place the hands in front of the head and fail to bend naturally at the waist.</figcaption>
+            </figure>
+          </div>
+
+          <div class="result-block">
+            <div class="result-heading">
+              <div>
+                <span class="result-kicker">Multi-Robot Evaluation</span>
+                <h3>One shared motion feature, test on eight humanoid robots</h3>
+                <p class="multi-robot-metric-note">RAMPJPE (mm) · lower is better</p>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table class="results-table compact-table multi-embodiment-table">
+                <thead>
+                  <tr>
+                    <th>Method</th><th>H1</th><th>T1</th><th>Tienkung</th><th>G1</th><th>R1</th><th>GR1‑T1</th><th>GR2‑V3</th><th>Atlas</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="ours-row"><td><strong>Ours</strong></td><td>51.315</td><td>51.246</td><td>67.991</td><td>26.362</td><td>27.809</td><td>43.778</td><td>49.059</td><td>72.047</td></tr>
+                  <tr><td>GVHMR → GMR</td><td>77.787</td><td>70.090</td><td>103.230</td><td>39.46</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                  <tr><td>WHAM → GMR</td><td>99.663</td><td>77.261</td><td>115.858</td><td>45.88</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="table-footnote">“—” denotes robots unsupported by GMR.</p>
+          </div>
+
+          <section class="embodied-demo-section" aria-labelledby="real-robot-teleop-title">
+            <div class="result-heading embodied-demo-heading">
+              <div>
+                <span class="result-kicker">Hardware demonstrations</span>
+                <h3 id="real-robot-teleop-title">Real-Robot and Real-Time Teleoperation Performance</h3>
+              </div>
+            </div>
+
+            <div class="comparison-video-grid real-robot-video-grid" aria-label="Real-robot motion comparisons">
+              <figure class="result-video-card">
+                <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-realroboarmswing.jpg?v=20260907-realrobot" src="assets/videos/realroboarmswing.mp4?v=20260907-realrobot">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption>Single-arm large-circle motion. All two-stage methods suffer motion collapse.</figcaption>
+              </figure>
+              <figure class="result-video-card">
+                <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-realrobosquatleglift.jpg?v=20260907-realrobot" src="assets/videos/realrobosquatleglift.mp4?v=20260907-realrobot">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption>Hands-on-head squat and leg-lift motion. The two-stage methods produce unnatural squatting and leg-lifting motions.</figcaption>
+              </figure>
+              <figure class="result-video-card">
+                <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-realroboStretch.jpg?v=20260907-realrobot" src="assets/videos/realroboStretch.mp4?v=20260907-realrobot">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption>Leftward side-stretch motion. In the two-stage methods, the right hand fails to extend over the head, while the left arm bends in the wrong direction instead of staying close to the thigh.</figcaption>
+              </figure>
+              <figure class="result-video-card">
+                <video controls muted loop playsinline preload="metadata" poster="assets/images/poster-realrobohandsbehindback.jpg?v=20260907-realrobot" src="assets/videos/realrobohandsbehindback.mp4?v=20260907-realrobot">
+                  Your browser does not support the video tag.
+                </video>
+                <figcaption>Hands-behind-the-back motion. All other two-stage methods incorrectly place both hands in front of the body.</figcaption>
+              </figure>
+            </div>
+
+            <div class="streaming-callout">
+              <div>
+                <span class="result-kicker">Real-Time Streaming Inference Mode</span>
+                <h3>Designed for Real-Time Visual Teleoperation</h3>
+                <p>Using sliding-window inference on a desktop NVIDIA GeForce RTX 5070 Ti GPU, BeyondRetarget achieves the following performance:</p>
+                <p class="streaming-latency-note"><strong>Latency note:</strong> The end-to-end delay visible in the demo video is higher than the reported inference latency because it additionally includes latency introduced by the Sonic motion execution module.</p>
+              </div>
+              <div class="streaming-specs">
+                <span><strong>200 ms</strong> latency</span>
+                <span><strong>50 FPS</strong> throughput</span>
+              </div>
+            </div>
+
+            <figure class="result-video-card streaming-video-card">
+              <video controls muted loop playsinline preload="metadata" src="assets/videos/teleopsmall.mp4?v=20260904-local-teleop" aria-label="Real-time visual teleoperation driven by monocular video">
+                Your browser does not support the video tag.
+              </video>
+              <figcaption>
+                Real-time visual teleoperation driven directly by monocular video.
+                <strong>Note: The multi-view motion-capture cameras visible in the background are not enabled. This demo relies solely on a single basic 1080p, 30 Hz monocular camera positioned directly in front of the operator.</strong>
+              </figcaption>
+            </figure>
+          </section>
+        </section>
+      </div>
+
+      <section class="section citation-section" id="citation">
+        <header class="section-header">
+          <span class="section-index">04</span>
+          <h2>Citation</h2>
+        </header>
+        <div class="citation-placeholder">
+          <div>
+            <span class="citation-label">BibTeX</span>
+            <p>The paper citation will be available after the public release.</p>
+          </div>
+          <button type="button" disabled>Coming Soon</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="page-footer">
+    <p>BeyondRetarget · Project preview</p>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+
+  <script src="script.js?v=20260904-paper-sync" defer></script>
+</body>
+</html>
