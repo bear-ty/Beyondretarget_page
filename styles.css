@@ -1316,6 +1316,14 @@ a.author-name:hover {
   text-align: right;
 }
 
+.streaming-experiment-note {
+  max-width: 980px;
+  margin: 12px 0 0;
+  color: #6d7789;
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
 .table-scroll {
   overflow-x: auto;
   padding-bottom: 8px;
@@ -1593,6 +1601,7 @@ a.author-name:hover {
 
 .embodied-demo-section .streaming-callout {
   margin-top: 0;
+  grid-template-columns: 1fr;
 }
 
 .streaming-callout {

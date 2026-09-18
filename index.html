@@ -393,16 +393,39 @@
               </figure>
             </div>
 
+            <div class="result-block streaming-result-block">
+              <div class="result-heading">
+                <div>
+                  <span class="result-kicker">Real-time performance</span>
+                  <h3>Streaming inference efficiency</h3>
+                </div>
+                <span class="table-note">Lower latency / VRAM and higher throughput are better</span>
+              </div>
+              <div class="table-scroll">
+                <table class="results-table compact-table streaming-results-table">
+                  <thead>
+                    <tr>
+                      <th>Method</th>
+                      <th><span class="metric-tooltip" tabindex="0" data-tooltip="Median end-to-end inference latency, measured in milliseconds. Lower is better.">Latency (ms) ↓</span></th>
+                      <th><span class="metric-tooltip" tabindex="0" data-tooltip="Maximum measured output rate under unlimited input speed. Higher is better.">Throughput (FPS) ↑</span></th>
+                      <th><span class="metric-tooltip" tabindex="0" data-tooltip="Peak GPU memory usage during streaming inference, measured in GiB. Lower is better.">Peak VRAM (GiB) ↓</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="ours-row"><td><strong>Ours</strong></td><td class="rank-first">192.8</td><td class="rank-first">50.02</td><td class="rank-first">7.03</td></tr>
+                    <tr><td>GVHMR → GMR</td><td>1369.4</td><td>44.31</td><td>9.18</td></tr>
+                    <tr><td>GVHMR → NMR</td><td>1305.7</td><td>44.36</td><td>9.73</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="streaming-experiment-note">On the same GPU, we build streaming inference pipelines for different methods and configure each to achieve the lowest possible latency, then measure their median latency and peak VRAM usage. We separately test their maximum throughput under the condition of unlimited input speed.</p>
+            </div>
+
             <div class="streaming-callout">
               <div>
-                <span class="result-kicker">Real-Time Streaming Inference Mode</span>
+                <span class="result-kicker">Streaming Inference Mode</span>
                 <h3>Designed for Real-Time Visual Teleoperation</h3>
-                <p>Using sliding-window inference on a desktop NVIDIA GeForce RTX 5070 Ti GPU, BeyondRetarget achieves the following performance:</p>
-                <p class="streaming-latency-note"><strong>Latency note:</strong> The end-to-end delay visible in the demo video is higher than the reported inference latency because it additionally includes latency introduced by the Sonic motion execution module.</p>
-              </div>
-              <div class="streaming-specs">
-                <span><strong>200 ms</strong> latency</span>
-                <span><strong>50 FPS</strong> throughput</span>
+                <p>With BeyondRetarget, responsive real-time monocular  visual teleoperation is possible.</p>
               </div>
             </div>
 
