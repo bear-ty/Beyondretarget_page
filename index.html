@@ -6,7 +6,7 @@
   <meta name="description" content="BeyondRetarget generates executable humanoid motion directly from monocular video without using human motion as an explicit intermediate representation during inference.">
   <meta name="keywords" content="BeyondRetarget, humanoid robot, motion retargeting, monocular video, robot motion estimation, embodied AI">
   <title>BeyondRetarget: Learning Executable Humanoid Motions Directly from Monocular Video</title>
-  <link rel="stylesheet" href="styles.css?v=20260924-paper-figures">
+  <link rel="stylesheet" href="styles.css?v=20260924-visual-refresh">
 </head>
 <body>
   <a class="skip-link" href="#abstract">Skip to content</a>
@@ -37,7 +37,7 @@
               <span class="author-name">Ziqi Liang<sup>1</sup></span>
               <span class="author-name">Dandan Lei<sup>3</sup></span>
               <span class="author-name">Xiaoyang Zhou<sup>4</sup></span>
-              <span class="author-name">Xiao-Xiao Long<sup>2</sup></span>
+              <span class="author-name">Xiao-xiao Long<sup>2</sup></span>
               <a class="author-name" href="https://shenqiu.njucite.cn/" target="_blank" rel="noopener noreferrer">Qiu Shen<sup>1,&dagger;</sup></a>
               <a class="author-name" href="https://cite.nju.edu.cn/People/Faculty/20190621/i5054.html" target="_blank" rel="noopener noreferrer">Xun Cao<sup>1</sup></a>
             </div>
@@ -251,20 +251,6 @@
               </a>
               <figcaption>Video features become a shared robot-oriented motion representation, which is decoded and refined into executable motion.</figcaption>
             </figure>
-            <figure class="figure-card">
-              <div class="figure-label">Unified human–robot supervision</div>
-              <a class="figure-link" href="assets/images/motion-space.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution unified supervision figure">
-                <img src="assets/images/motion-space.png?v=20260924-paper" alt="Human keypoints and limb directions aligned to different robot morphologies for unified motion supervision" loading="lazy" decoding="async">
-              </a>
-              <figcaption>Aligned keypoints and limb directions let human motion supervise robots with different morphologies.</figcaption>
-            </figure>
-            <figure class="figure-card">
-              <div class="figure-label">Contact-aware refinement</div>
-              <a class="figure-link" href="assets/images/contact-refinement.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution contact-aware refinement figure">
-                <img src="assets/images/contact-refinement.png?v=20260924-paper" alt="Contact and support state decisions guiding foot height, root trajectory, and inverse-kinematics corrections" loading="lazy" decoding="async">
-              </a>
-              <figcaption>Contact and support states guide kinematic corrections for stable robot motion.</figcaption>
-            </figure>
           </div>
         </section>
 
@@ -376,14 +362,6 @@
             <p class="table-footnote">“—” denotes robots unsupported by GMR.</p>
           </div>
 
-          <figure class="figure-card paper-result-figure">
-            <div class="figure-label">Qualitative results</div>
-            <a class="figure-link" href="assets/images/qualitative-results.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution qualitative results figure">
-              <img src="assets/images/qualitative-results.png?v=20260924-paper" alt="Pose comparisons with two-stage baselines and motion examples from multiple robots" loading="lazy" decoding="async">
-            </a>
-            <figcaption>Motion comparisons and examples of a shared representation driving multiple humanoid robots.</figcaption>
-          </figure>
-
           <section class="embodied-demo-section" aria-labelledby="real-robot-teleop-title">
             <div class="result-heading embodied-demo-heading">
               <div>
@@ -418,14 +396,6 @@
                 <figcaption>Hands-behind-the-back motion. All other two-stage methods incorrectly place both hands in front of the body.</figcaption>
               </figure>
             </div>
-
-            <figure class="figure-card paper-result-figure">
-              <div class="figure-label">Real-robot and teleoperation results</div>
-              <a class="figure-link" href="assets/images/real-robot-results.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution real-robot results figure">
-                <img src="assets/images/real-robot-results.png?v=20260924-paper" alt="Physical robot comparisons with two-stage baselines and monocular-video-driven teleoperation" loading="lazy" decoding="async">
-              </a>
-              <figcaption>Real-robot comparisons and monocular visual teleoperation.</figcaption>
-            </figure>
 
             <div class="result-block streaming-result-block">
               <div class="result-heading">
