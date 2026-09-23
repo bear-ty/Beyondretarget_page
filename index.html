@@ -6,7 +6,7 @@
   <meta name="description" content="BeyondRetarget generates executable humanoid motion directly from monocular video without using human motion as an explicit intermediate representation during inference.">
   <meta name="keywords" content="BeyondRetarget, humanoid robot, motion retargeting, monocular video, robot motion estimation, embodied AI">
   <title>BeyondRetarget: Learning Executable Humanoid Motions Directly from Monocular Video</title>
-  <link rel="stylesheet" href="styles.css?v=20260911-hf-cleanup">
+  <link rel="stylesheet" href="styles.css?v=20260924-paper-figures">
 </head>
 <body>
   <a class="skip-link" href="#abstract">Skip to content</a>
@@ -170,7 +170,7 @@
 
           <div class="abstract-copy">
             <p>
-              Large-scale executable motion data are essential for skill learning, whole-body control, and motion imitation of humanoid robots, yet acquiring such data is complicated and difficult. Monocular human videos are easy to collect and available at scale, making them a valuable source of motion data for humanoid robots. We present BeyondRetarget, an end-to-end framework that generates executable humanoid robot motions from monocular videos. We encodes input videos into a shared motion representation space, then translate them into multi-robot motions by robot-specific motion decoders. To address the scarcity of robot-specific data, we use a unified supervision scheme by aligning corresponding human and robot keypoints and limb morphologies, enabling human models to directly supervise training. To further enhance the temporal consistency and physical plausibility, we also introduce a contact‑aware refinement module to guide motion correction. Experiments show that BeyondRetarget can acquire accurate, robust, and executable humanoid robot motions from monocular videos, providing a new approach for large-scale, high-quality robot demonstration data acquisition.
+              Humanoid robots require large-scale motion data for skill learning and whole-body control. Existing approaches typically acquire such data through motion capture and construct explicit human body representations with the SMPL model. These methods implicitly assume kinematic isomorphism between humans and humanoid robots. However, despite their human-like appearance, humanoid robots differ substantially from humans in their motion mechanisms and actuation methods, making human motion difficult to use directly for robot motion generation and potentially limiting the accuracy and executability of the resulting robot motions. We present BeyondRetarget, an end-to-end framework for mapping monocular RGB videos directly to robot motion. The proposed framework removes the explicit SMPL intermediate representation. Instead, it learns an implicit, robot-oriented representation directly from visual observations, enabling the model to capture the cross-morphology motion structures. To generate motions better suited for robot execution, we further design a contact-aware motion optimization mechanism that improves temporal consistency and physical plausibility. Experiments show that BeyondRetarget substantially improves the accuracy and robustness of generated robot motions, while achieving higher execution success rates and lower latency in both simulation and real-world humanoid robots.
             </p>
           </div>
 
@@ -178,22 +178,22 @@
             <article class="feature-card">
               <span class="feature-number">01</span>
               <h3>End-to-End Estimation</h3>
-              <p>Video features are decoded directly into robot root trajectory and joint DoFs.</p>
+              <p>Monocular RGB video maps directly to executable robot motion without an explicit SMPL intermediate.</p>
             </article>
             <article class="feature-card">
               <span class="feature-number">02</span>
-              <h3>Unified Supervision</h3>
-              <p>Human annotations supervise robots through shared semantic points and morphology-aware scaling.</p>
+              <h3>Shared Motion Feature</h3>
+              <p>A robot-oriented representation and unified human–robot supervision support multiple humanoids.</p>
             </article>
             <article class="feature-card">
               <span class="feature-number">03</span>
-              <h3>Multi-Robot shared Backbone</h3>
-              <p>Shared motion feature is reused by lightweight robot-specific decoders.</p>
+              <h3>Contact-Aware Refinement</h3>
+              <p>Explicit foot contact and support states improve temporal and physical consistency.</p>
             </article>
             <article class="feature-card">
               <span class="feature-number">04</span>
-              <h3>Contact-Aware Refinement</h3>
-              <p>Grounding and constrained IK reduce foot sliding, penetration, and contact jitter.</p>
+              <h3>Robot Validation</h3>
+              <p>Simulation and real-robot tests demonstrate accuracy, robustness, execution success, and speed.</p>
             </article>
           </div>
         </section>
@@ -214,7 +214,9 @@
           </div>
 
           <figure class="figure-card overview-figure">
-            <img src="assets/images/pipeline-comparison.png?v=20260902-local-two" alt="Comparison between the conventional human reconstruction and robot retargeting pipeline and the direct BeyondRetarget pipeline">
+            <a class="figure-link" href="assets/images/pipeline-comparison.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution pipeline comparison figure">
+              <img src="assets/images/pipeline-comparison.png?v=20260924-paper" alt="Conventional video-to-human-motion retargeting pipeline compared with BeyondRetarget's shared video encoder and robot-specific decoders" loading="lazy" decoding="async">
+            </a>
             <figcaption>Conventional two-stage retargeting VS End-to-end multi-robot motion estimation.</figcaption>
           </figure>
 
@@ -244,8 +246,24 @@
           <div class="technical-grid">
             <figure class="figure-card model-figure">
               <div class="figure-label">Model architecture</div>
-              <img src="assets/images/model-architecture.png?v=20260902-local-two" alt="BeyondRetarget model architecture with temporal encoding, robot motion decoding, contact prediction, and refinement">
-              <figcaption>Temporal motion encoding, robot-specific decoding, contact prediction, and refinement in one unified model.</figcaption>
+              <a class="figure-link" href="assets/images/model-architecture.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution model architecture figure">
+                <img src="assets/images/model-architecture.png?v=20260924-paper" alt="BeyondRetarget architecture: visual encoder, temporal context aggregation, robot motion decoder, contact predictor, and refinement" loading="lazy" decoding="async">
+              </a>
+              <figcaption>Video features become a shared robot-oriented motion representation, which is decoded and refined into executable motion.</figcaption>
+            </figure>
+            <figure class="figure-card">
+              <div class="figure-label">Unified human–robot supervision</div>
+              <a class="figure-link" href="assets/images/motion-space.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution unified supervision figure">
+                <img src="assets/images/motion-space.png?v=20260924-paper" alt="Human keypoints and limb directions aligned to different robot morphologies for unified motion supervision" loading="lazy" decoding="async">
+              </a>
+              <figcaption>Aligned keypoints and limb directions let human motion supervise robots with different morphologies.</figcaption>
+            </figure>
+            <figure class="figure-card">
+              <div class="figure-label">Contact-aware refinement</div>
+              <a class="figure-link" href="assets/images/contact-refinement.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution contact-aware refinement figure">
+                <img src="assets/images/contact-refinement.png?v=20260924-paper" alt="Contact and support state decisions guiding foot height, root trajectory, and inverse-kinematics corrections" loading="lazy" decoding="async">
+              </a>
+              <figcaption>Contact and support states guide kinematic corrections for stable robot motion.</figcaption>
             </figure>
           </div>
         </section>
@@ -358,6 +376,14 @@
             <p class="table-footnote">“—” denotes robots unsupported by GMR.</p>
           </div>
 
+          <figure class="figure-card paper-result-figure">
+            <div class="figure-label">Qualitative results</div>
+            <a class="figure-link" href="assets/images/qualitative-results.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution qualitative results figure">
+              <img src="assets/images/qualitative-results.png?v=20260924-paper" alt="Pose comparisons with two-stage baselines and motion examples from multiple robots" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Motion comparisons and examples of a shared representation driving multiple humanoid robots.</figcaption>
+          </figure>
+
           <section class="embodied-demo-section" aria-labelledby="real-robot-teleop-title">
             <div class="result-heading embodied-demo-heading">
               <div>
@@ -392,6 +418,14 @@
                 <figcaption>Hands-behind-the-back motion. All other two-stage methods incorrectly place both hands in front of the body.</figcaption>
               </figure>
             </div>
+
+            <figure class="figure-card paper-result-figure">
+              <div class="figure-label">Real-robot and teleoperation results</div>
+              <a class="figure-link" href="assets/images/real-robot-results.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-resolution real-robot results figure">
+                <img src="assets/images/real-robot-results.png?v=20260924-paper" alt="Physical robot comparisons with two-stage baselines and monocular-video-driven teleoperation" loading="lazy" decoding="async">
+              </a>
+              <figcaption>Real-robot comparisons and monocular visual teleoperation.</figcaption>
+            </figure>
 
             <div class="result-block streaming-result-block">
               <div class="result-heading">

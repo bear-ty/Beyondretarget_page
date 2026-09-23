@@ -1001,6 +1001,15 @@ a.author-name:hover {
   background: #f6f6f6;
 }
 
+.figure-link {
+  display: block;
+  cursor: zoom-in;
+}
+
+.paper-result-figure {
+  margin: 32px 0;
+}
+
 .figure-card figcaption {
   margin-top: 13px;
   color: #7b8494;
