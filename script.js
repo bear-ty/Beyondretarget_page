@@ -182,7 +182,7 @@ document.querySelectorAll("[data-comparison-table]").forEach((table) => {
 
   const referenceCells = Array.from(referenceRow.cells);
   const metricStartIndex = 1;
-  const higherIsBetterOffsets = new Set([8]);
+  const higherIsBetterOffsets = new Set([7]);
 
   function parseMetric(cell) {
     const value = Number.parseFloat(cell.textContent.replace(/,/g, "").replace(/%/g, ""));
