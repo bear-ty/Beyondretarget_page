@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="BeyondRetarget generates executable humanoid motion directly from monocular video without using human motion as an explicit intermediate representation during inference.">
+  <meta name="description" content="BeyondRetarget maps monocular RGB videos directly to executable humanoid motions through robot-oriented implicit representations and contact-aware motion optimization.">
   <meta name="keywords" content="BeyondRetarget, humanoid robot, motion retargeting, monocular video, robot motion estimation, embodied AI">
   <title>BeyondRetarget: Learning Executable Humanoid Motions Directly from Monocular Video</title>
-  <link rel="stylesheet" href="styles.css?v=20260924-visual-refresh">
+  <link rel="stylesheet" href="styles.css?v=20260924-abstract-pipeline">
 </head>
 <body>
   <a class="skip-link" href="#abstract">Skip to content</a>
@@ -85,7 +85,7 @@
         <div class="tldr-card">
           <p>
             <strong>TL;DR</strong>
-            BeyondRetarget maps a monocular RGB video directly to executable root motion and joint trajectories for multiple humanoid robots—without requiring reconstructed human motion as an inference-time intermediate.
+            BeyondRetarget maps monocular RGB video directly to executable humanoid motions by learning robot-oriented implicit representations from visual observations, without an explicit human-motion intermediate.
           </p>
         </div>
 
@@ -178,22 +178,22 @@
             <article class="feature-card">
               <span class="feature-number">01</span>
               <h3>End-to-End Estimation</h3>
-              <p>Monocular RGB video maps directly to executable robot motion without an explicit SMPL intermediate.</p>
+              <p>Monocular RGB video maps directly to robot motion without an explicit human-motion intermediate.</p>
             </article>
             <article class="feature-card">
               <span class="feature-number">02</span>
-              <h3>Shared Motion Feature</h3>
-              <p>A robot-oriented representation and unified human–robot supervision support multiple humanoids.</p>
+              <h3>Robot-Oriented Features</h3>
+              <p>Implicit visual features capture motion structures across human and robot morphologies.</p>
             </article>
             <article class="feature-card">
               <span class="feature-number">03</span>
-              <h3>Contact-Aware Refinement</h3>
-              <p>Explicit foot contact and support states improve temporal and physical consistency.</p>
+              <h3>Contact-Aware Optimization</h3>
+              <p>Contact-guided motion optimization improves temporal consistency and physical plausibility.</p>
             </article>
             <article class="feature-card">
               <span class="feature-number">04</span>
-              <h3>Robot Validation</h3>
-              <p>Simulation and real-robot tests demonstrate accuracy, robustness, execution success, and speed.</p>
+              <h3>Executable Motions</h3>
+              <p>Simulation and real-robot tests show greater accuracy, robustness, execution success, and lower latency.</p>
             </article>
           </div>
         </section>
@@ -465,6 +465,6 @@
     <a href="#top">Back to top ↑</a>
   </footer>
 
-  <script src="script.js?v=20260904-paper-sync" defer></script>
+  <script src="script.js?v=20260924-latest-figures-table" defer></script>
 </body>
 </html>
