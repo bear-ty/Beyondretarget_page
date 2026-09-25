@@ -255,3 +255,20 @@ document.querySelectorAll("[data-comparison-table]").forEach((table) => {
     });
   });
 });
+
+const copyCitationButton = document.querySelector("[data-copy-citation]");
+copyCitationButton?.addEventListener("click", async () => {
+  const citation = document.querySelector("#bibtex-citation")?.textContent.trim();
+  if (!citation) return;
+
+  try {
+    await navigator.clipboard.writeText(citation);
+    copyCitationButton.textContent = "Copied!";
+  } catch {
+    copyCitationButton.textContent = "Copy failed";
+  }
+
+  window.setTimeout(() => {
+    copyCitationButton.textContent = "Copy BibTeX";
+  }, 2000);
+});

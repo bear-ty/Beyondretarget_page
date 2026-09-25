@@ -1689,13 +1689,27 @@ a.author-name:hover {
 
 .citation-placeholder {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
   padding: 28px 30px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--surface-soft);
+}
+
+.citation-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.citation-bibtex {
+  margin: 12px 0 0;
+  color: #40536f;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .citation-placeholder p {
